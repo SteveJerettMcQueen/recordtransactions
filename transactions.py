@@ -172,3 +172,6 @@ by_form_cat = trans.groupby(['Category', 'Form'])
 
 ################################################################################
 
+# Test for categorical independency of transactions
+contingency = pd.crosstab(trans.Category, trans.Entry)
+print contingency
