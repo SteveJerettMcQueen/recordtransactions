@@ -15,7 +15,7 @@ from util import random_time
 # # # # Read data # # # # 
 trans = pd.read_excel('transactions.xlsx', sheet_name='Transactions', usecols=[0, 1, 2, 3, 4, 5])
 # print trans.info()
-# print trans.head(10)
+# print trans.head(5)
 
 # # # # Functions on Dataframes # # # #
 # Returns 1 if pos & 0 if neg
@@ -206,6 +206,7 @@ df_c = g['Credits'].agg(np.sum).reset_index()
 g2 = xdtn.groupby('Date')
 df_d = g2['Debits'].agg(np.sum).reset_index()
 xdtsp_n = pd.merge(df_c, df_d, on='Date')
+print xdtsp_n
 
 xdtsp_n.loc[:,'Pos_Net'] = pd.Series(xdtsp_n.apply(find_pos_net, axis=1))
 xdtsp_n['Debits'] = xdtsp_n.Debits.abs()
