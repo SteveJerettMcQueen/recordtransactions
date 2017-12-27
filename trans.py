@@ -118,7 +118,7 @@ dm_table = pd.pivot_table(trans, index='Day', columns='Month', values='Amount', 
 # fig.savefig('display4.svg')
 
 # Balance #
-balance = trans[['Balance', 'Time']][::-1]
+balance = trans[['Balance', 'Time']]
 balance.set_index('Time')
 
 change_bal = trans[['Change_Balance', 'Time']][::-1]
@@ -206,7 +206,7 @@ df_c = g['Credits'].agg(np.sum).reset_index()
 g2 = xdtn.groupby('Date')
 df_d = g2['Debits'].agg(np.sum).reset_index()
 xdtsp_n = pd.merge(df_c, df_d, on='Date')
-print xdtsp_n
+# print xdtsp_n
 
 xdtsp_n.loc[:,'Pos_Net'] = pd.Series(xdtsp_n.apply(find_pos_net, axis=1))
 xdtsp_n['Debits'] = xdtsp_n.Debits.abs()

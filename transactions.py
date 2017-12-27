@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+from scipy.stats import chi2_contingency
 ################################################################################
 
 # Read data 
@@ -58,7 +59,6 @@ dates = trans.loc[:,'Date']
 trans.loc[:,'Balance'] = pd.Series(calc_bal(trans.loc[:,'Amount']), index=trans.index)
 trans.loc[:,'Change_Balance'] = pd.Series(trans.loc[:,'Balance'].diff(), index=trans.index)
 trans.loc[:,'Entry'] = pd.Series(trans.apply(set_entry, axis=1), index=trans.index)
-trans.loc[:,'Time'] = pd.Series(dates.dt.time, index=trans.index)
 trans.loc[:,'Day'] = pd.Series(dates.dt.dayofweek, index=trans.index)
 trans.loc[:,'Month'] = pd.Series(dates.dt.month, index=trans.index)
 trans.loc[:,'Year'] = pd.Series(dates.dt.year, index=trans.index)
@@ -66,7 +66,7 @@ trans.loc[:,'Year'] = pd.Series(dates.dt.year, index=trans.index)
 ################################################################################
 
 # Transaction allocation
-# write_data_by_alloc()
+write_data_by_alloc()
  
 ################################################################################
 
@@ -85,13 +85,13 @@ df_b.loc[:,'Change_Net'] = pd.Series(df_b['Net'].diff(), index=df_b.index)
 
 # Number of transactions per month in a given year
 c = pd.DataFrame({'Count' : by_y_m.size()}).reset_index()
-print c
+# print c
 
 ################################################################################
 
 # Transaction balance
-bal = trans.loc[:,('Time', 'Balance')]
-# print bal.head(1)
+bal = trans.loc[:,('Date', 'Amount', 'Balance')]
+# print bal.head(10)
 # print bal.min()
 # print bal.max()
 
@@ -116,7 +116,7 @@ debits = amounts[is_debit]
 # print debits.sum()
 
 # Transaction credits/debits on the same date
-t = trans
+t = trans[band]
 t.loc[:,'Date'] = pd.Series(dates.dt.date, index=trans.index)
 by_date_entry = t.groupby(['Date', 'Entry'])
 sum_a = by_date_entry['Amount'].agg([np.sum]).reset_index()
@@ -174,4 +174,5 @@ by_form_cat = trans.groupby(['Category', 'Form'])
 
 # Test for categorical independency of transactions
 contingency = pd.crosstab(trans.Category, trans.Entry)
-print contingency
+chi2, p, dof, exp = chi2_contingency(contingency)
+# print p
