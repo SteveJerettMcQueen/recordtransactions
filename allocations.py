@@ -1,15 +1,7 @@
 import pandas as pd
+import transactions as tr
 
 from transactions import calc_bal
-################################################################################
-
-# Read data 
-allocs = pd.read_excel('allocations.xlsx', sheet_name=None)
-# print allocs.keys()
-# for k, df in allocs.items():
-    # print df.info()
-    # print df.head(3)
-
 ################################################################################
 
 # Note allocations as of 12/28/17
@@ -21,6 +13,15 @@ allocs = pd.read_excel('allocations.xlsx', sheet_name=None)
 # 6000 Savings              4478.93     10/1/14 | 4478.93
 # 8000 Sinking Fund         4138.87     10/1/14 | 4487.66
 # 9000 Education Fund       0           8/13/12
+
+# Read data 
+allocs = pd.read_excel('allocations.xlsx', sheet_name=None)
+# print allocs.keys()
+# for k, df in allocs.items():
+    # print df.info()
+    # print df.head(3)
+
+################################################################################
 
 # Support data
 for k, df in allocs.items():
@@ -35,8 +36,8 @@ for k, df in allocs.items():
 
 # Allocation balance
 for k, df in allocs.items():
-    alloc_bal = df.loc[:,('Allocation','Date', 'Amount', 'Balance')]
-    # print alloc_bal.describe()
-    print alloc_bal.head(1)
-    # print alloc_bal.min()
-    # print alloc_bal.max()
+    a = curr_bal = df['Balance'].iloc[0]
+    b = min_bal = df['Balance'].min()
+    c = max_bal = df['Balance'].max()
+
+    # print(k, curr_bal, min_bal, max_bal)

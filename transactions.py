@@ -41,7 +41,7 @@ def to_pivot_table(dataframe, index, columns, values, func):
     return pd.pivot_table(
         dataframe, index=index, 
         columns=columns, values=values, 
-        aggfunc=func)
+        aggfunc=func, fill_value=0)
 
 # Get subset of data by allocation number #
 def write_data_by_alloc():
@@ -73,27 +73,26 @@ write_data_by_alloc()
 # Transactions by time
 # Change in net per month
 by_y_m = trans.groupby(['Year','Month'])
-df_a = by_y_m['Amount'].agg([np.sum]).reset_index().rename(columns={'sum': 'Net'})
-df_a.loc[:,'Change_Net'] = pd.Series(df_a['Net'].diff(), index=df_a.index)
-# print df_a
+by_year_month = by_y_m['Amount'].agg([np.sum]).reset_index().rename(columns={'sum': 'Net'})
+by_year_month.loc[:,'Change_Net'] = pd.Series(by_year_month['Net'].diff(), index=by_year_month.index)
+# print by_year_month
 
 # Change in net per year
 by_m_y = trans.groupby(['Month','Year'])
-df_b = by_m_y['Amount'].agg([np.sum]).reset_index().rename(columns={'sum': 'Net'})
-df_b.loc[:,'Change_Net'] = pd.Series(df_b['Net'].diff(), index=df_b.index)
-# print df_b
+by_month_year = by_m_y['Amount'].agg([np.sum]).reset_index().rename(columns={'sum': 'Net'})
+by_month_year.loc[:,'Change_Net'] = pd.Series(by_month_year['Net'].diff(), index=by_month_year.index)
+# print by_month_year
 
 # Number of transactions per month in a given year
-cnt = pd.DataFrame({'Count' : by_y_m.size()}).reset_index()
-# print cnt
+per_month_year = pd.DataFrame({'Count' : by_y_m.size()}).reset_index()
+# print per_month_year
 
 ################################################################################
 
 # Transaction balance
-bal = trans.loc[:,('Date', 'Amount', 'Balance')]
-# print bal.head(1) 
-# print bal.min()
-# print bal.max()
+curr_bal = trans['Balance'].iloc[0]
+min_bal = trans['Balance'].min()
+max_bal = trans['Balance'].max()
 
 ################################################################################
 
@@ -119,22 +118,24 @@ debits = amounts[is_debit]
 t = trans[band]
 t.loc[:,'Date'] = pd.Series(dates.dt.date, index=trans.index)
 by_date_entry = t.groupby(['Date', 'Entry'])
-sum_a = by_date_entry['Amount'].agg([np.sum]).reset_index()
 
+sum_a = by_date_entry['Amount'].agg([np.sum]).reset_index()
 cred = (sum_a.Entry == 'Credit')
 deb = (sum_a.Entry == 'Debit')
-same_date = pd.merge(sum_a[cred], sum_a[deb], on='Date')
-same_date = same_date.rename(columns={
+
+on_same_date = pd.merge(sum_a[cred], sum_a[deb], on='Date')
+on_same_date = on_same_date.rename(columns={
     'Entry_x': 'Entry_Credit', 'Entry_y': 'Entry_Debit',
     'sum_x': 'Sum_Credit', 'sum_y': 'Sum_Debit'
 })
 
-same_date.loc[:,'Net'] = pd.Series(same_date.apply(find_net, axis=1))
+on_same_date.loc[:,'Net'] = pd.Series(on_same_date.apply(find_net, axis=1))
 # print same_date.head()
 
-# Ratio of amount entries
+# Transaction entry
+# Fequency of amount entries
 ent_freq = trans['Entry'].value_counts(normalize=True)
-print (100*ent_freq)
+# print (100*ent_freq)
 
 ################################################################################
 
@@ -152,22 +153,22 @@ cat_freq = trans['Category'].value_counts(normalize=True)
 
 # Spendings & earnings of each category on frequency
 by_cat = trans.groupby('Category')
-sum_b = by_cat['Amount'].agg([np.sum])
-# print sum_b.min()
-# print sum_b.max()
-# print sum_b
+by_category = by_cat['Amount'].agg([np.sum])
+# print by_category.min()
+# print by_category.max()
+# print by_category
 
 by_y_cat = trans.groupby(['Category', 'Year'])
-sum_c = by_y_cat['Amount'].agg([np.sum])
-# print sum_c.min()
-# print sum_c.max()
-# print sum_c
+by_year_category = by_y_cat['Amount'].agg([np.sum])
+# print by_year_category.min()
+# print by_year_category.max()
+# print by_year_category
 
 by_m_cat = trans.groupby(['Category', 'Month'])
-sum_d = by_m_cat['Amount'].agg([np.sum])
-# print sum_d.min()
-# print sum_d.max()
-# print sum_d
+by_month_category = by_m_cat['Amount'].agg([np.sum])
+# print by_month_category.min()
+# print by_month_category.max()
+# print by_month_category
 
 by_form_cat = trans.groupby(['Category', 'Form'])
 # print by_form_cat.count()
