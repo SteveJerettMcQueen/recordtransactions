@@ -7,7 +7,7 @@ from scipy.stats import chi2_contingency
 # Read data 
 trans = pd.read_excel('transactions.xlsx', sheet_name='Transactions', usecols=[0, 1, 2, 3, 4, 5])
 # print trans.info()
-# print trans.head(10)
+# print trans.head()
 
 ################################################################################
 
@@ -84,14 +84,14 @@ df_b.loc[:,'Change_Net'] = pd.Series(df_b['Net'].diff(), index=df_b.index)
 # print df_b
 
 # Number of transactions per month in a given year
-c = pd.DataFrame({'Count' : by_y_m.size()}).reset_index()
-# print c
+cnt = pd.DataFrame({'Count' : by_y_m.size()}).reset_index()
+# print cnt
 
 ################################################################################
 
 # Transaction balance
 bal = trans.loc[:,('Date', 'Amount', 'Balance')]
-# print bal.head(10)
+# print bal.head(1) 
 # print bal.min()
 # print bal.max()
 
@@ -133,6 +133,8 @@ same_date.loc[:,'Net'] = pd.Series(same_date.apply(find_net, axis=1))
 # print same_date.head()
 
 # Ratio of amount entries
+ent_freq = trans['Entry'].value_counts(normalize=True)
+print (100*ent_freq)
 
 ################################################################################
 
