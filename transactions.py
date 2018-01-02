@@ -5,7 +5,7 @@ from scipy.stats import chi2_contingency
 ################################################################################
 
 # Read data 
-trans = pd.read_excel('transactions.xlsx', sheet_name='Transactions', usecols=[0, 1, 2, 3, 4, 5])
+trans = pd.read_excel('transactions.xlsx', sheet_name='Transaction', usecols=[0, 1, 2, 3, 4])
 # print trans.info()
 # print trans.head()
 
@@ -41,21 +41,21 @@ def to_pivot_table(dataframe, index, columns, values, func):
     return pd.pivot_table(
         dataframe, index=index, 
         columns=columns, values=values, 
-        aggfunc=func, fill_value=0)
+        aggfunc=func)
 
-# Get subset of data by allocation number #
-def write_data_by_alloc():
-    by_alloc = trans.groupby('Allocation')
-    writer = pd.ExcelWriter('allocations.xlsx', engine='xlsxwriter')
-    for name, group in by_alloc:
-        cols = ['Allocation','Date','Entry','Form','Category','Description','Amount']
+# Get subset of data by category #
+def write_data_by_category():
+    by_cat = trans.groupby('Category')
+    writer = pd.ExcelWriter('categories.xlsx', engine='xlsxwriter')
+    for name, group in by_cat:
+        cols = ['Date_Time','Entry','Form','Category','Description','Amount']
         group.to_excel(writer, sheet_name=str(name), columns=cols)
     writer.save()
     
 ################################################################################
 
 # Support data
-dates = trans.loc[:,'Date']
+dates = trans.loc[:,'Date_Time']
 trans.loc[:,'Balance'] = pd.Series(calc_bal(trans.loc[:,'Amount']), index=trans.index)
 trans.loc[:,'Change_Balance'] = pd.Series(trans.loc[:,'Balance'].diff(), index=trans.index)
 trans.loc[:,'Entry'] = pd.Series(trans.apply(set_entry, axis=1), index=trans.index)
@@ -65,21 +65,21 @@ trans.loc[:,'Year'] = pd.Series(dates.dt.year, index=trans.index)
 
 ################################################################################
 
-# Transaction allocation
-write_data_by_alloc()
+# Transaction category
+# write_data_by_category()
  
 ################################################################################
 
 # Transactions by time
 # Change in net per month
 by_y_m = trans.groupby(['Year','Month'])
-by_year_month = by_y_m['Amount'].agg([np.sum]).reset_index().rename(columns={'sum': 'Net'})
+by_year_month = by_y_m['Amount'].agg([np.sum]).reset_index().rename(columns={'sum':'Net'})
 by_year_month.loc[:,'Change_Net'] = pd.Series(by_year_month['Net'].diff(), index=by_year_month.index)
 # print by_year_month
 
 # Change in net per year
 by_m_y = trans.groupby(['Month','Year'])
-by_month_year = by_m_y['Amount'].agg([np.sum]).reset_index().rename(columns={'sum': 'Net'})
+by_month_year = by_m_y['Amount'].agg([np.sum]).reset_index().rename(columns={'sum':'Net'})
 by_month_year.loc[:,'Change_Net'] = pd.Series(by_month_year['Net'].diff(), index=by_month_year.index)
 # print by_month_year
 
@@ -116,8 +116,8 @@ debits = amounts[is_debit]
 
 # Transaction credits/debits on the same date
 t = trans[band]
-t.loc[:,'Date'] = pd.Series(dates.dt.date, index=trans.index)
-by_date_entry = t.groupby(['Date', 'Entry'])
+u = t.assign(Date = lambda x: x.loc[:,'Date_Time'].dt.date)
+by_date_entry = u.groupby(['Date', 'Entry'])
 
 sum_a = by_date_entry['Amount'].agg([np.sum]).reset_index()
 cred = (sum_a.Entry == 'Credit')
@@ -130,25 +130,25 @@ on_same_date = on_same_date.rename(columns={
 })
 
 on_same_date.loc[:,'Net'] = pd.Series(on_same_date.apply(find_net, axis=1))
-# print same_date.head()
+# print on_same_date.head()
 
 # Transaction entry
 # Fequency of amount entries
-ent_freq = trans['Entry'].value_counts(normalize=True)
+ent_freq = trans.loc[:,'Entry'].value_counts(normalize=True)
 # print (100*ent_freq)
 
-################################################################################
+# ################################################################################
 
 # Transaction form
 # Frequency 
-form_freq = trans['Form'].value_counts(normalize=True)
+form_freq = trans.loc[:,'Form'].value_counts(normalize=True)
 # print (100*form_freq)
 
-################################################################################
+# ################################################################################
 
 # Transaction category
 # Frequency
-cat_freq = trans['Category'].value_counts(normalize=True)
+cat_freq = trans.loc[:,'Category'].value_counts(normalize=True)
 # print (100*cat_freq)
 
 # Spendings & earnings of each category on frequency
@@ -173,9 +173,26 @@ by_month_category = by_m_cat['Amount'].agg([np.sum])
 by_form_cat = trans.groupby(['Category', 'Form'])
 # print by_form_cat.count()
 
-################################################################################
+# Credit categories
+cc = trans.loc[:,('Category', 'Amount')][is_credit]
+by_c_c = cc.groupby('Category')
+by_credit_cats = by_c_c['Amount'].agg([np.sum])
+# print by_credit_cats.min()
+# print by_credit_cats.max()
+# print by_credit_cats
+
+# Debit categories
+dc = trans.loc[:,('Category', 'Amount')][is_debit]
+by_d_c = dc.groupby('Category')
+by_debit_cats = by_d_c['Amount'].agg([np.sum])
+# print by_debit_cats.min()
+# print by_debit_cats.max()
+# print by_debit_cats
+
+# ################################################################################
 
 # Test for categorical independency of transactions
 contingency = pd.crosstab(trans.Category, trans.Entry)
+# print contingency
 chi2, p, dof, exp = chi2_contingency(contingency)
 # print p

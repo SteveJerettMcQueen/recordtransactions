@@ -9,7 +9,7 @@ TEMPLATE = 'template.html'
 env = Environment(loader=FileSystemLoader('.'))
 template = env.get_template(FOLDER + TEMPLATE)
 
-cols = ['Allocation','Date','Entry','Form','Category','Description','Amount']
+cols = ['Date','Entry','Form','Category','Description','Amount']
 
 template_vars = {
     'title': "Transactions",
