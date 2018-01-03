@@ -56,6 +56,7 @@ def write_data_by_category():
 
 # Support data
 dates = trans.loc[:,'Date_Time']
+# trans.loc[:,'Date_Time'] = pd.Series(trans.apply(ut.set_time, axis=1), index=trans.index)
 trans.loc[:,'Balance'] = pd.Series(calc_bal(trans.loc[:,'Amount']), index=trans.index)
 trans.loc[:,'Change_Balance'] = pd.Series(trans.loc[:,'Balance'].diff(), index=trans.index)
 trans.loc[:,'Entry'] = pd.Series(trans.apply(set_entry, axis=1), index=trans.index)
@@ -93,6 +94,8 @@ per_month_year = pd.DataFrame({'Count' : by_y_m.size()}).reset_index()
 curr_bal = trans['Balance'].iloc[0]
 min_bal = trans['Balance'].min()
 max_bal = trans['Balance'].max()
+
+# print curr_bal
 
 ################################################################################
 
