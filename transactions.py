@@ -56,10 +56,10 @@ def write_data_by_category():
 
 # Support data
 dates = trans.loc[:,'Date_Time']
-# trans.loc[:,'Date_Time'] = pd.Series(trans.apply(ut.set_time, axis=1), index=trans.index)
 trans.loc[:,'Balance'] = pd.Series(calc_bal(trans.loc[:,'Amount']), index=trans.index)
 trans.loc[:,'Change_Balance'] = pd.Series(trans.loc[:,'Balance'].diff(), index=trans.index)
 trans.loc[:,'Entry'] = pd.Series(trans.apply(set_entry, axis=1), index=trans.index)
+trans.loc[:,'Date'] = pd.Series(dates.dt.date, index=trans.index)
 trans.loc[:,'Day'] = pd.Series(dates.dt.dayofweek, index=trans.index)
 trans.loc[:,'Month'] = pd.Series(dates.dt.month, index=trans.index)
 trans.loc[:,'Year'] = pd.Series(dates.dt.year, index=trans.index)
@@ -95,8 +95,6 @@ curr_bal = trans['Balance'].iloc[0]
 min_bal = trans['Balance'].min()
 max_bal = trans['Balance'].max()
 
-# print curr_bal
-
 ################################################################################
 
 # Transaction amounts
@@ -104,7 +102,7 @@ max_bal = trans['Balance'].max()
 n = [1, 2, 3]
 col = trans.Amount
 band = np.abs(col-col.mean())<=(n[0]*col.std())
-amounts = trans.loc[:,'Amount'][band]
+amounts = trans.loc[:,'Amount']
 
 is_credit = (trans.Entry == 'Credit')
 is_debit = (trans.Entry == 'Debit')

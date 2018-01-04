@@ -30,7 +30,7 @@ def save_heat_map_b():
     b = tr.to_pivot_table(tr.trans,'Month','Year','Amount','count')
     ax = sns.heatmap(data=b, vmin=b.min().min(), vmax=b.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Blues')
+        cbar_kws={"shrink": .80}, cmap='Greens')
     ax.set_title('Total Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
@@ -56,7 +56,7 @@ def save_heat_map_d():
     d = tr.to_pivot_table(tr.trans,'Month','Year','Amount', np.sum)   
     ax = sns.heatmap(data=d, vmin=d.min().min(), vmax=d.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Blues')
+        cbar_kws={"shrink": .80}, cmap='Greys')
     ax.set_title('Sum Of Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
@@ -238,9 +238,13 @@ def save_box_c():
 
 # Count of transactions of each form and category
 def save_count_a():
-    fig = plt.figure(figsize=(12, 12))
-    ax = sns.countplot(data=tr.trans, x="Form", hue="Category", palette="Blues_d");
+    # fig = plt.figure(figsize=(12, 12))
+    # ax = sns.countplot(data=tr.trans, x="Form", hue="Category", palette="Blues_d");
     
+    by_cat = tr.trans[['Category', 'Amount']].groupby('Category').count()
+    df = by_cat.rename(columns={'Amount':'Count'})[::-1]
+    ax = df.plot(kind='barh', y='Count', figsize=(14, 10), width=.65, legend=True)
+
     fig = ax.get_figure()
     fig.savefig('graphs/count_a.svg')
 
