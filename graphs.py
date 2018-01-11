@@ -1,10 +1,16 @@
 import numpy as np
+import pandas as pd
 import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-darkgrid')
-import seaborn as sns
 import matplotlib.dates as mdates
+
+import seaborn as sns
+# import plotly
+# import plotly.plotly as py
+# import plotly.graph_objs as go
+
 import transactions as tr
 
 ################################################################################
@@ -16,7 +22,7 @@ def save_heat_map_a():
     fig = plt.figure(figsize=(7, 7))
     a = tr.to_pivot_table(tr.trans,'Day','Year','Amount','count')
     ax = sns.heatmap(data=a, vmin=a.min().min(), vmax=a.max().max(), 
-        annot=True, fmt='.2f', linewidths=.5, 
+        annot=True, fmt='.0f', linewidths=.5, 
         cbar_kws={"shrink": .80}, cmap='Blues')
     ax.set_title('Total Transactions Per Day', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
@@ -255,7 +261,25 @@ def save_count_b():
     
     fig = ax.get_figure()
     fig.savefig('graphs/count_b.svg')
+
+# def save_test_plotly():
+    # plotly.tools.set_credentials_file(username='SteveJerettMcQueen', api_key='TcCtbICAjbt5Ny4D2jbT')
+    # N = 500
+    # x = np.linspace(0, 1, N)
+    # y = np.random.randn(N)
+    # df = pd.DataFrame({'x': x, 'y': y})
+    # df.head()
     
+    # data = [
+    #     go.Scatter(
+    #         x=df['x'], # assign x as the dataframe column 'x'
+    #         y=df['y']
+    #     )
+    # ]
+    
+    # return plotly.offline.plot(figure_or_data=data, 
+    #     filename='graphs/basic-line-plot.html', show_link=False, output_type='div')
+
 ################################################################################
 
 def save_figs():
@@ -279,5 +303,5 @@ def save_figs():
     save_box_c()
     save_count_a()
     save_count_b()
-
+    
 save_figs()

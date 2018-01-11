@@ -1,3 +1,4 @@
+import pdfkit
 import transactions as tr
 
 from jinja2 import Template, Environment, FileSystemLoader
@@ -8,8 +9,8 @@ FOLDER = 'bootstrap-pages/'
 TEMPLATE = 'template.html'
 PATH = FOLDER + TEMPLATE
 env = Environment(loader=FileSystemLoader('.'))
-template = env.get_template(PATH)
 
+template = env.get_template(PATH)
 template_vars = {
     'title'         : "Transactions",
     'trans'         : tr.trans.head(7),
@@ -22,7 +23,8 @@ template_vars = {
     'size_cat'      : tr.by_category.size
 }
 
-f = open(FOLDER + 'report.html','w')
 html_out = template.render(template_vars)
-f.write(html_out.encode('utf-8'))
-f.close()
+
+# f = open(FOLDER + 'report.html','w')
+# f.write(html_out.encode('utf-8'))
+# f.close()

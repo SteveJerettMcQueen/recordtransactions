@@ -22,8 +22,8 @@
                     padding-top: 56px;
                 }
             }
-
         </style>
+        
     </head>
 
     <body>
@@ -59,33 +59,33 @@
         <div class="container">
             <h4>Transaction Summary</h4>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td colspan="7">Current Balance</td>
-                                <td align="right", colspan="1">{{curr_bal}}</td>
+                                <td colspan="5">Current Balance</td>
+                                <td class='money', align="right", colspan="1">{{curr_bal}}</td>
                             </tr>
                             <tr>
-                                <td colspan="4">Credits</td>
+                                <td colspan="2">Credits</td>
                                 <td align="right", colspan="1">
                                     <span class="badge badge-pill badge-dark">
                                         {{size_credits}}
                                     </span>
                                 </td>
-                                <td align="right", colspan="3">{{sum_credits}}</td>
+                                <td class='money', align="right", colspan="3">{{sum_credits}}</td>
                             </tr>
                             <tr>
-                                <td colspan="4">Debits</td>
+                                <td colspan="2">Debits</td>
                                 <td align="right", colspan="1">
                                     <span class="badge badge-pill badge-dark">
                                         {{size_debits}}
                                     </span>
                                 </td>
-                                <td align="right", colspan="3">{{sum_debits}}</td>
+                                <td class='money', align="right", colspan="3">{{sum_debits}}</td>
                             </tr>
                             <tr>
-                                <td colspan="7">Categories</td>
+                                <td colspan="5">Categories</td>
                                 <td align="right", colspan="1">
                                     <span class="badge badge-pill badge-dark">
                                         {{size_cat}}
@@ -100,7 +100,7 @@
             <h4>Transactions</h4>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover">
+                    <table class="table table-hover table-striped">
                         <caption>Recent transactions</caption>
                         <thead class="thead-dark">
                             <tr>
@@ -108,7 +108,7 @@
                                 <th colspan="1", scope="col">Form</th>
                                 <th colspan="4", scope="col">Category</th>
                                 <th colspan="4", scope="col">Description</th>
-                                <th id="amount", colspan="1", scope="col">Amount</th>
+                                <th id="amount_th", colspan="1", scope="col">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,7 +118,7 @@
                                 <td colspan="1">{{row['Form']}}</td>
                                 <td colspan="4">{{row['Category']}}</td>
                                 <td colspan="4">{{row['Description']}}</td>
-                                <td align="right", colspan="1">{{row['Amount']}}</td>
+                                <td class='money', align="right", colspan="1">{{row['Amount']}}</td>
                             </tr>
                             {% endfor %}
                             <tr>
@@ -135,9 +135,13 @@
             </div>
         </div> <!-- /container -->
 
-        <!-- Bootstrap core JavaScript -->
+        <!-- Bootstrap Core JavaScript -->
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Money Format Library JavaScript -->
+        <script src='currencyFormatter.js' type='text/javascript' ></script>
+        <script src='template.js' type='text/javascript' ></script>
 
     </body>
 
