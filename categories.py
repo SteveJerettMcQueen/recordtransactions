@@ -8,7 +8,7 @@ cats = pd.read_excel('categories.xlsx', sheet_name=None)
 # print cats.keys()
 # for k, df in cats.items():
     # print df.info()
-    # print df.head(3)
+    # print df.head()
 
 ################################################################################
 
@@ -23,7 +23,7 @@ for k, df in cats.items():
 
 ################################################################################
 
-# Allocation balance
+# Category balance
 for k, df in cats.items():
     cat_bal = df.loc[:,('Category','Date', 'Amount', 'Balance')]
     # print cat_bal.describe()

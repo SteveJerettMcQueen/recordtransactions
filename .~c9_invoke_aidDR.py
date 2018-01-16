@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-darkgrid')
 import matplotlib.dates as mdates
 
+import plotly
+import plotly.plotly as py
+import plotly.graph_objs as go
 import seaborn as sns
-# import plotly
-# import plotly.plotly as py
-# import plotly.graph_objs as go
 
 import transactions as tr
 
+from util import to_pivot_table
 ################################################################################
 
 # Heatmaps
@@ -20,7 +21,7 @@ import transactions as tr
 # Map day and year on count
 def save_heat_map_a():
     fig = plt.figure(figsize=(7, 7))
-    a = tr.to_pivot_table(tr.trans,'Day','Year','Amount','count')
+    a = to_pivot_table(tr.trans,'Day','Year','Amount','count')
     ax = sns.heatmap(data=a, vmin=a.min().min(), vmax=a.max().max(), 
         annot=True, fmt='.0f', linewidths=.5, 
         cbar_kws={"shrink": .80}, cmap='Blues')
@@ -33,9 +34,9 @@ def save_heat_map_a():
 # Map month and year on count
 def save_heat_map_b():
     fig = plt.figure(figsize=(7, 7))
-    b = tr.to_pivot_table(tr.trans,'Month','Year','Amount','count')
+    b = to_pivot_table(tr.trans,'Month','Year','Amount','count')
     ax = sns.heatmap(data=b, vmin=b.min().min(), vmax=b.max().max(), 
-        annot=True, fmt='.2f', linewidths=.5, 
+        annot=True, fmt='.0f', linewidths=.5, 
         cbar_kws={"shrink": .80}, cmap='Greens')
     ax.set_title('Total Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
@@ -46,7 +47,7 @@ def save_heat_map_b():
 # Map day and month on count
 def save_heat_map_c():
     fig = plt.figure(figsize=(7, 7))
-    c = tr.to_pivot_table(tr.trans,'Day','Month','Amount','count')
+    c = to_pivot_table(tr.trans,'Day','Month','Amount','count')
     ax = sns.heatmap(data=c, vmin=c.min().min(), vmax=c.max().max(), 
         annot=True, linewidths=.5, 
         cbar_kws={"shrink": .80}, cmap='Purples')
@@ -59,10 +60,10 @@ def save_heat_map_c():
 # Map month and year on sum
 def save_heat_map_d():
     fig = plt.figure(figsize=(7, 7))
-    d = tr.to_pivot_table(tr.trans,'Month','Year','Amount', np.sum)   
+    d = to_pivot_table(tr.trans,'Month','Year','Amount', np.sum)   
     ax = sns.heatmap(data=d, vmin=d.min().min(), vmax=d.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Greys')
+        cbar_kws={"shrink": .80}, cmap='PuRd')
     ax.set_title('Sum Of Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
@@ -72,7 +73,7 @@ def save_heat_map_d():
 # Map category and year on sum
 def save_heat_map_e():
     fig = plt.figure(figsize=(9,12))
-    e = tr.to_pivot_table(tr.trans,'Category','Year','Amount', np.sum)    
+    e = to_pivot_table(tr.trans,'Category','Year','Amount', np.sum)    
     ax = sns.heatmap(data=e, vmin=e.min().min(), vmax=e.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
         cbar_kws={"shrink": .80}, cmap='Oranges')
@@ -88,7 +89,6 @@ def save_heat_map_e():
 years = mdates.YearLocator()  
 months = mdates.MonthLocator()  
 yearsFmt = mdates.DateFormatter('%Y')
-# start_date = tr.trans.Date >= '1/1/2015'
 
 # Chart on balance
 def save_line_chart_a():
@@ -261,24 +261,6 @@ def save_count_b():
     
     fig = ax.get_figure()
     fig.savefig('graphs/count_b.svg')
-
-# def save_test_plotly():
-    # plotly.tools.set_credentials_file(username='SteveJerettMcQueen', api_key='TcCtbICAjbt5Ny4D2jbT')
-    # N = 500
-    # x = np.linspace(0, 1, N)
-    # y = np.random.randn(N)
-    # df = pd.DataFrame({'x': x, 'y': y})
-    # df.head()
-    
-    # data = [
-    #     go.Scatter(
-    #         x=df['x'], # assign x as the dataframe column 'x'
-    #         y=df['y']
-    #     )
-    # ]
-    
-    # return plotly.offline.plot(figure_or_data=data, 
-    #     filename='graphs/basic-line-plot.html', show_link=False, output_type='div')
 
 ################################################################################
 

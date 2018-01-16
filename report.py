@@ -1,4 +1,3 @@
-import pdfkit
 import transactions as tr
 
 from jinja2 import Template, Environment, FileSystemLoader

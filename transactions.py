@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
+import finances as fin
 
 from scipy.stats import chi2_contingency
 ################################################################################
 
 # Read data 
-trans = pd.read_excel('transactions.xlsx', sheet_name='Transaction', usecols=[0, 1, 2, 3, 4])
+trans = fin.trans
 # print trans.info()
 # print trans.head()
 
@@ -35,13 +36,6 @@ def find_net(row):
         return 0
     else:
         return -1
-
-# Creates a table on an index, columns, values, and function
-def to_pivot_table(dataframe, index, columns, values, func):
-    return pd.pivot_table(
-        dataframe, index=index, 
-        columns=columns, values=values, 
-        aggfunc=func)
 
 # Get subset of data by category #
 def write_data_by_category():
