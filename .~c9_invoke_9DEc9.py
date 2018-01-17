@@ -72,11 +72,11 @@ def save_heat_map_d():
 
 # Map category and year on sum
 def save_heat_map_e():
-    fig = plt.figure(figsize=(12,12))
+    fig = plt.figure(figsize=(9,12))
     e = to_pivot_table(tr.trans,'Category','Year','Amount', np.sum)    
     ax = sns.heatmap(data=e, vmin=e.min().min(), vmax=e.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='PuBuGn')
+        cbar_kws={"shrink": .80}, cmap='Oranges')
     ax.set_title('Sum Of Categories Per Year', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Category', fontsize=11)
@@ -265,25 +265,25 @@ def save_count_b():
 ################################################################################
 
 def save_figs():
-    # save_heat_map_a()
-    # save_heat_map_b()
-    # save_heat_map_c()
+    save_heat_map_a()
+    save_heat_map_b()
+    save_heat_map_c()
     save_heat_map_d()
-    # save_heat_map_e()
-    # save_line_chart_a()
-    # save_line_chart_b()
-    # save_hist_a()
-    # save_hist_b()
-    # save_hist_c()
-    # save_hist_d()
-    # save_reg_a()
-    # save_scat_a()
-    # save_fact_a()
-    # save_fact_b()
-    # save_box_a()
-    # save_box_b()
-    # save_box_c()
-    # save_count_a()
-    # save_count_b()
+    save_heat_map_e()
+    save_line_chart_a()
+    save_line_chart_b()
+    save_hist_a()
+    save_hist_b()
+    save_hist_c()
+    save_hist_d()
+    save_reg_a()
+    save_scat_a()
+    save_fact_a()
+    save_fact_b()
+    save_box_a()
+    save_box_b()
+    save_box_c()
+    save_count_a()
+    save_count_b()
     
 save_figs()

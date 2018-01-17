@@ -23,7 +23,7 @@ def save_heat_map_a():
     fig = plt.figure(figsize=(7, 7))
     a = to_pivot_table(tr.trans,'Day','Year','Amount','count')
     ax = sns.heatmap(data=a, vmin=a.min().min(), vmax=a.max().max(), 
-        annot=True, fmt='.0f', linewidths=.5, 
+        annot=True, fmt='.0f', linewidths=.5, cbar=True,
         cbar_kws={"shrink": .80}, cmap='Blues')
     ax.set_title('Total Transactions Per Day', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)

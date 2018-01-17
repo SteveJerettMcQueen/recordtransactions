@@ -63,7 +63,7 @@ def save_heat_map_d():
     d = to_pivot_table(tr.trans,'Month','Year','Amount', np.sum)   
     ax = sns.heatmap(data=d, vmin=d.min().min(), vmax=d.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='BuPu')
+        cbar_kws={"shrink": .80}, cmap='YlGnBu')
     ax.set_title('Sum Of Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
