@@ -8,7 +8,7 @@ from scipy.stats import chi2_contingency
 # Read data 
 trans = fin.trans
 # print trans.info()
-# print trans.head(10)
+print trans.head(10)
 
 ################################################################################
 

@@ -24,8 +24,8 @@ def save_heat_map_f():
     fig = plt.figure(figsize=(7, 7))
     d = to_pivot_table(ear.earns,'Month','Year','Net_Pay', np.sum)   
     ax = sns.heatmap(data=d, vmin=d.min().min(), vmax=d.max().max(), 
-        annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='BuPu')
+        annot=True, fmt='.2f', linewidths=.5, cbar=True,
+        cbar_kws={"shrink": 1}, cmap='BuPu')
     ax.set_title('Sum Of Net Pay Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
@@ -36,7 +36,7 @@ def save_heat_map_f():
 
 # Chart on net pay
 def save_line_chart_c():
-    fig, axes = plt.subplots(figsize=(15, 4))
+    fig, axes = plt.subplots(figsize=(10, 4))
     for k, df in ear.by_workplace:
         ax = df.plot(x='Check_Date', y='Net_Pay', kind='line', ax=axes, label=k)
         ax.set_title('Net Pay over Time', fontsize=11)
@@ -93,4 +93,3 @@ def save_figs():
     save_line_chart_c_plotly()
     save_hist_e()
     
-save_figs()

@@ -10,4 +10,3 @@ trans = pd.read_excel(xlsx, 'Transactions', usecols=[0, 1, 2, 3, 4])
 earnings = pd.read_excel(xlsx, 'Earnings', usecols=[0, 1, 2, 3])
 
 ################################################################################
-

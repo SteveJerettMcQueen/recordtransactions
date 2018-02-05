@@ -76,7 +76,7 @@ def save_heat_map_e():
     e = to_pivot_table(tr.trans,'Category','Year','Amount', np.sum)    
     ax = sns.heatmap(data=e, vmin=e.min().min(), vmax=e.max().max(), 
         annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='PuBuGn')
+        cbar_kws={"shrink": 1, "orientation": "horizontal"}, cmap='PuBuGn')
     ax.set_title('Sum Of Categories Per Year', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Category', fontsize=11)

@@ -23,8 +23,8 @@ def save_heat_map_a():
     fig = plt.figure(figsize=(7, 7))
     a = to_pivot_table(tr.trans,'Day','Year','Amount','count')
     ax = sns.heatmap(data=a, vmin=a.min().min(), vmax=a.max().max(), 
-        annot=True, fmt='.0f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Blues')
+        annot=True, fmt='.0f', linewidths=.5, cbar=True,
+        cbar_kws={"shrink": 1}, cmap='Blues')
     ax.set_title('Total Transactions Per Day', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Day', fontsize=11)
@@ -36,8 +36,8 @@ def save_heat_map_b():
     fig = plt.figure(figsize=(7, 7))
     b = to_pivot_table(tr.trans,'Month','Year','Amount','count')
     ax = sns.heatmap(data=b, vmin=b.min().min(), vmax=b.max().max(), 
-        annot=True, fmt='.0f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Greens')
+        annot=True, fmt='.0f', linewidths=.5, cbar=True,
+        cbar_kws={"shrink": 1}, cmap='Greens')
     ax.set_title('Total Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
@@ -49,8 +49,8 @@ def save_heat_map_c():
     fig = plt.figure(figsize=(7, 7))
     c = to_pivot_table(tr.trans,'Day','Month','Amount','count')
     ax = sns.heatmap(data=c, vmin=c.min().min(), vmax=c.max().max(), 
-        annot=True, linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Purples')
+        annot=True, linewidths=.5, cbar=True,
+        cbar_kws={"shrink": 1}, cmap='Purples')
     ax.set_title('Total Transactions Per Day', fontsize=11)
     ax.set_xlabel('Month', fontsize=11)
     ax.set_ylabel('Day', fontsize=11)
@@ -62,8 +62,8 @@ def save_heat_map_d():
     fig = plt.figure(figsize=(7, 7))
     d = to_pivot_table(tr.trans,'Month','Year','Amount', np.sum)   
     ax = sns.heatmap(data=d, vmin=d.min().min(), vmax=d.max().max(), 
-        annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='BuPu')
+        annot=True, fmt='.2f', linewidths=.5, cbar=True,
+        cbar_kws={"shrink": 1}, cmap='YlGnBu')
     ax.set_title('Sum Of Transactions Per Month', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Month', fontsize=11)
@@ -72,11 +72,13 @@ def save_heat_map_d():
 
 # Map category and year on sum
 def save_heat_map_e():
-    fig = plt.figure(figsize=(9,12))
-    e = to_pivot_table(tr.trans,'Category','Year','Amount', np.sum)    
-    ax = sns.heatmap(data=e, vmin=e.min().min(), vmax=e.max().max(), 
-        annot=True, fmt='.2f', linewidths=.5, 
-        cbar_kws={"shrink": .80}, cmap='Oranges')
+    sns.set_context("paper", font_scale=1)
+    fig = plt.figure(figsize=(12.5,10))
+    e = to_pivot_table(tr.trans,'Category','Year','Amount', np.sum) 
+    ax = sns.heatmap(
+        data=e,vmin=e.min().min(), vmax=e.max().max(), 
+        annot=True, fmt='.2f', linewidths=.5, cbar=True, 
+        cbar_kws={"shrink": 1}, cmap='YlGnBu')
     ax.set_title('Sum Of Categories Per Year', fontsize=11)
     ax.set_xlabel('Year', fontsize=11)
     ax.set_ylabel('Category', fontsize=11)
@@ -265,25 +267,25 @@ def save_count_b():
 ################################################################################
 
 def save_figs():
-    save_heat_map_a()
-    save_heat_map_b()
-    save_heat_map_c()
-    save_heat_map_d()
+    # save_heat_map_a()
+    # save_heat_map_b()
+    # save_heat_map_c()
+    # save_heat_map_d()
     save_heat_map_e()
-    save_line_chart_a()
-    save_line_chart_b()
-    save_hist_a()
-    save_hist_b()
-    save_hist_c()
-    save_hist_d()
-    save_reg_a()
-    save_scat_a()
-    save_fact_a()
-    save_fact_b()
-    save_box_a()
-    save_box_b()
-    save_box_c()
-    save_count_a()
-    save_count_b()
+    # save_line_chart_a()
+    # save_line_chart_b()
+    # save_hist_a()
+    # save_hist_b()
+    # save_hist_c()
+    # save_hist_d()
+    # save_reg_a()
+    # save_scat_a()
+    # save_fact_a()
+    # save_fact_b()
+    # save_box_a()
+    # save_box_b()
+    # save_box_c()
+    # save_count_a()
+    # save_count_b()
     
 save_figs()
